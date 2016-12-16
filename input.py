@@ -33,5 +33,18 @@ def input_producer(filename, batch_size, min_after_queue):
                                                         capacity=min_after_queue + 3 * batch_size)
     return batch_images, batch_labels
 
-tf.import_graph_def()
-tf.train.import_meta_graph
+
+class Inputs(object):
+    def __init__(self, train=True):
+        if train is True:
+            self.batch_size = 56
+            self.images, self.labels = input_producer(filename="records/train.tfrecords",
+                                                      batch_size=self.batch_size,
+                                                      min_after_queue=400)
+        else:
+            self.batch_size = 128
+            self.images, self.labels = input_producer(filename="records/validate.tfrecords",
+                                                      batch_size=self.batch_size,
+                                                      min_after_queue=400)
+        self.num_classes = 50
+        self.learning_rate = 5e-4
